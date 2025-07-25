@@ -10,6 +10,8 @@ class Topic(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
+        if len(self.text) > 10:
+            return f"{self.text[:10]}..."
         return self.text
 
 class Entry(models.Model):
