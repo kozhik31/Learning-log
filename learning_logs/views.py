@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 from django.contrib.auth.decorators import login_required
@@ -23,7 +23,7 @@ def topics(request):
 @login_required()
 def topic(request, topic_id):
     """Страница с одной темой и всеми записями"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic, id=topic_id)
     check_topic_owner(topic, request)
 
     entries = topic.entry_set.order_by('-date_added')
@@ -90,3 +90,7 @@ def edit_entry(request, entry_id):
 def check_topic_owner(topic, request):
     if topic.owner != request.user:
         raise Http404
+
+
+def custom_404(request, exception):
+    return render(request, 'learning_logs/404.html', status=404)

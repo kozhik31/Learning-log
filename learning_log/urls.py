@@ -24,3 +24,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
 
 ]
+
+handler404 = 'learning_logs.views.custom_404'
